@@ -11,6 +11,7 @@ import (
 	"os"
 	"log"
 	"strconv"
+	"strings"
 )
 var lineCount int = 0
 func main() {
@@ -42,9 +43,9 @@ func main() {
 		//writeRecordsIntoDirectory(id,"name")
 		writeRecordsIntoDirectory(id,"Tejaswi","9803181751","abhi@yahoo.com","Ashford UT","0") */
 
-		sendDataToFrontEnd()
+		//sendDataToFrontEnd()
 		//defer file.Close()
-
+		deleteRecords("1")
 
 }
 
@@ -147,4 +148,45 @@ func sendDataToFrontEnd(){
 
 	fmt.Println("The data is :", dataToBeSent["contacts"])
 	
+}
+
+func deleteRecords(id string){
+
+	file,err := os.Open("contactlist.csv")
+	checkError("Cannot read file",err)
+
+		// Get a CSV Reader Object.
+	reader := csv.NewReader(file)
+	reader.Comma = ','
+
+	records,err:= reader.ReadAll()
+	checkError("Read Error", err)
+	
+	file.Close()
+
+	var err1 = os.Remove("contactlist.csv")
+	checkError("Delete Error", err1)
+
+	csvfile, err2 := os.Create("contactlist.csv")
+	checkError("Creation error",err2)
+	writer := csv.NewWriter(csvfile)
+
+	for _, record := range records {
+		fmt.Println("Value of the Data is :",record)
+
+		for i:=0; i<len(record); i++ {
+			var val int = strings.Compare(record[0],id)
+			if(val == 0){
+				record[5] = "1"
+			}
+		}
+
+		err:= writer.Write(record)
+		checkError("Cannot Write into the file",err)
+	}
+
+	 writer.Flush()
+	 csvfile.Close()
+
+
 }
