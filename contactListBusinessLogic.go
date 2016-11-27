@@ -21,7 +21,7 @@ import(
 	"log"
 )
 
-var fullPath string = "directory.csv"
+var fullPath string = ""
 
 /* Function to check if the file exists or not.
  1. This function returns true if the file already exits.
@@ -33,13 +33,15 @@ func isFileExists(filePath string) bool {
 	_,err := os.Stat(filePath)
 	if err!= nil {
 		fmt.Println("File doesn't exists in the given directory. A new file will be created.")
+		fullPath = filePath;
 		createFile()
 		// Create The file.
 	} else {
 		fmt.Println("File already Exists.")
 		isExists = true
+		fullPath = filePath;
 	}
-	fullPath = filePath;
+
 	return isExists
 }
 
@@ -60,12 +62,7 @@ func createFile(){
 
 // Write records into the given file specified in the global path.
 func writeRecordIntoFile(dataString string){
-	
 	f, err := os.OpenFile(fullPath, os.O_APPEND|os.O_WRONLY, 0600)
-
-// Write records into the given file.
-func writeRecordIntoFile(dataString string, filename string){
-	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0600)
 	check(err)
 
 	defer f.Close()
@@ -141,7 +138,7 @@ func deleteRecord(id string){
 	createFile()
 	// Form the Front end data.
 	//count := 1;
-	for i:=1; i<len(records);i++ {
+	for i:=1; i<len(records)-1;i++ {
 		str:= records[i]
 		newstr:= s.Split(str,"|")
 		if(s.Compare(newstr[0],id)==0) {
@@ -163,11 +160,12 @@ func updateRecord(id string, targetstr string, targetval string){
 	var data string = string(bytes)
 
 	records := s.Split(data,"\n")
-
+	fmt.Println("The records are: ",records)
+	fmt.Println("The length of the records are : ", len(records))
 	createFile()
 	// Form the Front end data.
 	//count := 1;
-	for i:=1; i<len(records);i++ {
+	for i:=1; i<len(records)-1;i++ {
 		str:= records[i]
 		newstr:= s.Split(str,"|")
 		if(s.Compare(newstr[0],id)==0) {
@@ -184,6 +182,7 @@ func updateRecord(id string, targetstr string, targetval string){
 		}
 
 		finalstr:= s.Join(newstr,"|")
+		fmt.Println(finalstr)
 		finalstr = finalstr+"\n"
 		writeRecordIntoFile(finalstr)
 	}
@@ -201,12 +200,15 @@ func check(e error) {
 func main() {
 
 	 
-	 isFileExists("contactlist.csv")
+	 isFileExists("newdir1.csv")
 	//createFile("directory.csv")
-	//addRecordsToTheFile("Chaitanya Sri Krishna Lolla","9803187958","lollachaitanya@gmail.com","UT","0")
-	retrieveContactData()
-	//updateRecord("1","name","Chennu")
-	//deleteRecord("1")
+	//addRecordsToTheFile("Chaitanya","9803187958","chaitanya@gmail.com","UT","0")
+	//addRecordsToTheFile("Nikhil","9803187951","nikhil@gmail.com","UT","0")
+	//addRecordsToTheFile("Abhishek","9803187952","abhi@gmail.com","Harrisburg","0")
+	//addRecordsToTheFile("Teja","9803187953","teja@gmail.com","Ashford","0")
+	//retrieveContactData()
+	updateRecord("1","email","abhishek@gmail.com")
+	//deleteRecord("5")
 }	
 
 
