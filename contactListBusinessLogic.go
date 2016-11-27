@@ -10,7 +10,7 @@ Low level Details:
 1) Contains Implementations for the File Read, write.
 2) Contains implementation for the indexing of the CSV File.
  */
-package main 
+package main
 
 import(
 	"fmt"
@@ -29,14 +29,13 @@ func createFile(fullPath string){
 	 defer f.Close()
 
 	dataString := "sep=|\n"
-	n3, err1 := f.WriteString(dataString) 
+	n3, err1 := f.WriteString(dataString)
 	 check(err1)
 	fmt.Println("Succesffully written the file with length : ",n3)
 }
 
 // Write records into the given file.
 func writeRecordIntoFile(dataString string, filename string){
-	
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0600)
 	check(err)
 
@@ -44,7 +43,6 @@ func writeRecordIntoFile(dataString string, filename string){
 
 	_, errWrite := f.WriteString(dataString);
 	check(errWrite)
-	
 }
 
 // Add Records into the give file.
@@ -170,10 +168,9 @@ func check(e error) {
 
 // Main function implementation for the busines Logic.
 func main() {
-	 	
 	//createFile("directory.csv")
 	//addRecordsToTheFile("Chaitanya Lolla","9803187958","lollachaitanya@yahoo.com","UT","0")
 	//retrieveContactData("directory.csv")
 	//updateRecord("directory.csv","1","name","Chennu")
 	deleteRecord("directory.csv","1")
-}	
+}
