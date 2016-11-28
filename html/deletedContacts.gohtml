@@ -4,7 +4,7 @@ function split_and_load_str(contact_string)
 { 
 	var table = document.getElementById("contactTable");
 	var split_str = contact_string.split(";");
-	if(split_str[5]=="1"){
+	if(split_str[5]=="0"){
 		return;
 	}
 	var rowCount = table.rows.length;
@@ -12,19 +12,10 @@ function split_and_load_str(contact_string)
 	var colCount = table.rows[0].cells.length;
 	for (var i=0; i<colCount; i++){
 		var newCell = row.insertCell(i);
-		if(i==(colCount-2)){
-			newCell.innerHTML = '<form method="POST" action="/deleteContact">' 
+		if(i==(colCount-1)){
+			newCell.innerHTML = '<form method="POST" action="/restoreContact">' 
 				+ '<input type="hidden" name="numId" value="' + split_str[0] + '" > ' +
-				'<input type="submit" value="DEL"></form>';
-		}
-		else if(i==(colCount-1)){
-			newCell.innerHTML = '<form method="POST" action="/editContact">' 
-				+ '<input type="hidden" name="numId" value="' + split_str[0] + '" > ' +
-				'<input type="hidden" name="name" value="' + split_str[1] + '" > ' +
-				'<input type="hidden" name="phoneNo" value="' + split_str[2] + '" > ' +
-				'<input type="hidden" name="email" value="' + split_str[3] + '" > ' +
-				'<input type="hidden" name="address" value="' + split_str[4] + '" > ' +
-				'<input type="submit" value="EDT"></form>';
+				'<input type="submit" value="RESTR"></form>';
 		}else{
 			newCell.innerHTML = split_str[i];
 		}
@@ -41,8 +32,7 @@ function split_and_load_str(contact_string)
 				<th> Phone Number </th>
 				<th> Email </th>
 				<th> Address </th>
-				<th> DEL </th>
-				<th> EDIT </th>
+				<th> Restore </th>
 			</tr>
 
 			<!--Loop this on the number of records in the .csv file-->

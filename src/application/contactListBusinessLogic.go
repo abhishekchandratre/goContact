@@ -128,7 +128,7 @@ func retrieveContactData() map[string][]string{
 }
 
 // Logical deletion of the Contact Data.
-func deleteRecord(id string){
+func deleteRecord(id string,value string){
 
 	bytes,err := ioutil.ReadFile(fullPath)
 	check(err)
@@ -144,7 +144,7 @@ func deleteRecord(id string){
 		newstr:= s.Split(str,"|")
 		if(s.Compare(newstr[0],id)==0) {
 			deleteVal := len(newstr)-1
-			newstr[deleteVal] = "1"
+			newstr[deleteVal] = value
 		}
 
 		finalstr:= s.Join(newstr,"|")

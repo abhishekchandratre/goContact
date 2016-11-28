@@ -27,10 +27,15 @@ func indexHandler() http.HandlerFunc {
 
 func listContactHandler() http.HandlerFunc {
 	return func (w http.ResponseWriter, r *http.Request) {
-		test := map[string][]string{
-			"contacts" : {"1;Abhishek Chandratre;+17049068013;abhishek.chandratre@gmail.com;516 barton creek drive, APT E;0", "2;Tejas Konduri;+17049068013;tejas.konduri@gmail.com;516 barton creek drive, APT E;0"},
-		}
-		renderTemplate(w, "list.gohtml", &test)
+		dataToBeSent := retrieveContactData()
+		renderTemplate(w, "list.gohtml", &dataToBeSent)
+	}
+}
+
+func deletedContactHandler() http.HandlerFunc {
+	return func (w http.ResponseWriter, r *http.Request) {
+		dataToBeSent := retrieveContactData()
+		renderTemplate(w, "deletedContacts.gohtml", &dataToBeSent)
 	}
 }
 
@@ -48,6 +53,7 @@ func addContactHandler() http.HandlerFunc {
 			address := r.Form["address"][0]
 
 			var record string = name + ";" + phoneNo + ";" + email + ";" + address + ";0"
+			addRecordsToTheFile(name,phoneNo,email,address,"0")
 			fmt.Println("Adding record" + record)
 			http.Redirect(w,r,"/listContact",http.StatusSeeOther)
 		}
@@ -63,7 +69,8 @@ func pathHandler() http.HandlerFunc {
 			r.ParseForm()
 			//Get input value of csv path
 			fileName := r.Form["csvPath"][0]
-			fmt.Println("Adding file "+ fileName + " For contact listing")
+			//fmt.Println("Adding file "+ fileName + " For contact listing")
+			isFileExists(fileName)
 			http.Redirect(w,r,"/listContact",http.StatusSeeOther)
 		}
 	}
@@ -75,8 +82,19 @@ func editContactHandler() http.HandlerFunc {
 			r.ParseForm()
 			//Get input value of csv path
 			id := r.Form["numId"][0]
-			fmt.Println("Editing ID[" + id +"].")
-			http.Redirect(w,r,"/listContact",http.StatusSeeOther)
+			name := r.Form["name"][0]
+			phoneNo := r.Form["phoneNo"][0]
+			email := r.Form["email"][0]
+			address := r.Form["address"][0]
+			var record string = name + ";" + phoneNo + ";" + email + ";" + address + ";0"
+			fmt.Println("Editing record" + record)
+			//delete first
+			deleteRecord(id,"1")
+			//Add new record
+			contact := map[string][]string{
+				"editContact":{record},
+			}
+			renderTemplate(w, "addContact.gohtml", &contact)
 		}
 	}
 }
@@ -88,6 +106,20 @@ func deleteContactHandler() http.HandlerFunc {
 			//Get input value of csv path
 			id := r.Form["numId"][0]
 			fmt.Println("Deleting ID[" + id +"].")
+			deleteRecord(id,"1")
+			http.Redirect(w,r,"/listContact",http.StatusSeeOther)
+		}
+	}
+}
+
+func restoreContactHandler() http.HandlerFunc {
+	return func (w http.ResponseWriter, r *http.Request) {
+		if r.Method == "POST"{
+			r.ParseForm()
+			//Get input value of csv path
+			id := r.Form["numId"][0]
+			fmt.Println("Restoring ID[" + id +"].")
+			deleteRecord(id,"0")
 			http.Redirect(w,r,"/listContact",http.StatusSeeOther)
 		}
 	}
@@ -100,6 +132,8 @@ func main() {
 	http.HandleFunc("/listContact", listContactHandler())
 	http.HandleFunc("/deleteContact", deleteContactHandler())
 	http.HandleFunc("/editContact", editContactHandler())
+	http.HandleFunc("/delContacts", deletedContactHandler())
+	http.HandleFunc("/restoreContact",restoreContactHandler())
 	http.HandleFunc("/",indexHandler())
 	//Start listening
 	http.ListenAndServe(":8080",nil)
