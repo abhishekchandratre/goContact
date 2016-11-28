@@ -1,11 +1,40 @@
 {{define "content"}}
+<script type="text/javascript">
+function split_and_load_str(contact_string) 
+{ 
+	var split_str = contact_string.split(";");
+	var input_name = document.getElementById("input_name");
+	input_name.value = split_str[0];
+	var input_phoneNo = document.getElementById("input_phoneNo");
+	input_phoneNo.value = split_str[1];
+	var input_email = document.getElementById("input_email");
+	input_email.value = split_str[2];
+	var input_address = document.getElementById("input_address");
+	input_address.value = split_str[3];
+}
+</script>
 <div>
 	<form action="\addContact" method="POST">
-		Name:<input type="text" name="name">
-		Phone no:<input type="text" name="phoneNo">
-		Email:<input type="email" name="email">
-		Address:<input type="text" name="address">
-		<input type="submit" value="Add">
+		{{ if . }}
+		{{range .editContact}}
+		<div id="editDiv">
+			Name:<input type="text" name="name" id="input_name">
+			Phone no:<input type="text" name="phoneNo" id="input_phoneNo">
+			Email:<input type="email" name="email" id="input_email">
+			Address:<input type="text" name="address" id="input_address">
+			<input type="submit" value="Save">
+			<script>
+split_and_load_str( {{.}} );
+			</script>
+		</div>
+		{{end}}
+		{{else}}
+			Name:<input type="text" name="name">
+			Phone no:<input type="text" name="phoneNo">
+			Email:<input type="email" name="email">
+			Address:<input type="text" name="address">
+			<input type="submit" value="Add">
+		{{end}}
 	</form>
 </div>
 {{end}}

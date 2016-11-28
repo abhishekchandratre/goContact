@@ -83,6 +83,7 @@ func addRecordsToTheFile(name string, phoneNumber string,email string, address s
 //Helper Function.
 // Indexing Implementation which checks the current position of the record in CSV File.
 func getRecordNumber(filename string) int {
+	fmt.Println("reading file ",fullPath)
 	bytes,err := ioutil.ReadFile(filename)
 	check(err)
 	var data string = string(bytes)
@@ -121,7 +122,7 @@ func retrieveContactData() map[string][]string{
 
 	}
 	dataToBeSent["contacts"] = mapStr
-	fmt.Println("The data to be sent is :", dataToBeSent["contacts"])
+	//fmt.Println("The data to be sent is :", dataToBeSent["contacts"])
 
 	return dataToBeSent
 }

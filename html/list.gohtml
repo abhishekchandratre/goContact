@@ -11,13 +11,17 @@ function split_and_load_str(contact_string)
 		var newCell = row.insertCell(i);
 		if(i==(colCount-2)){
 			newCell.innerHTML = '<form method="POST" action="/deleteContact">' 
-				+ '<input type="hidden" name="numId" value="' + split_str[0] +
-				'" > <input type="submit" value="DEL"></form>';
+				+ '<input type="hidden" name="numId" value="' + split_str[0] + '" > ' +
+				'<input type="submit" value="DEL"></form>';
 		}
 		else if(i==(colCount-1)){
 			newCell.innerHTML = '<form method="POST" action="/editContact">' 
-				+ '<input type="hidden" name="numId" value="' + split_str[0] +
-				'" > <input type="submit" value="EDT"></form>';
+				+ '<input type="hidden" name="numId" value="' + split_str[0] + '" > ' +
+				'<input type="hidden" name="name" value="' + split_str[1] + '" > ' +
+				'<input type="hidden" name="phoneNo" value="' + split_str[2] + '" > ' +
+				'<input type="hidden" name="email" value="' + split_str[3] + '" > ' +
+				'<input type="hidden" name="address" value="' + split_str[4] + '" > ' +
+				'<input type="submit" value="EDT"></form>';
 		}else{
 			newCell.innerHTML = split_str[i];
 		}
