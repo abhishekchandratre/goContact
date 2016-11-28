@@ -1,0 +1,54 @@
+{{ define "content" }}
+<script type="text/javascript">
+function split_and_load_str(contact_string) 
+{ 
+	var table = document.getElementById("contactTable");
+	var rowCount = table.rows.length;
+	var row = table.insertRow(rowCount);
+	var colCount = table.rows[0].cells.length;
+	var split_str = contact_string.split(";");
+	for (var i=0; i<colCount; i++){
+		var newCell = row.insertCell(i);
+		if(i==(colCount-2)){
+			newCell.innerHTML = '<form method="POST" action="/deleteContact">' 
+				+ '<input type="hidden" name="numId" value="' + split_str[0] +
+				'" > <input type="submit" value="DEL"></form>';
+		}
+		else if(i==(colCount-1)){
+			newCell.innerHTML = '<form method="POST" action="/editContact">' 
+				+ '<input type="hidden" name="numId" value="' + split_str[0] +
+				'" > <input type="submit" value="EDT"></form>';
+		}else{
+			newCell.innerHTML = split_str[i];
+		}
+	}
+}
+</script>
+	<div align="center">
+		<h2>List of entries</h2>
+		<br>
+		<table border="1px solid black;" id="contactTable">
+			<tr>
+				<th> Sr. No. </th>
+				<th> Name </th>
+				<th> Phone Number </th>
+				<th> Email </th>
+				<th> Address </th>
+				<th> DEL </th>
+				<th> EDIT </th>
+			</tr>
+
+			<!--Loop this on the number of records in the .csv file-->
+			{{ range .contacts }}
+			<script>
+split_and_load_str( {{.}} );
+			</script>
+			{{end}}
+		</table>		
+		<div id="saveButton">
+			<form action="/saveContact" method="POST">
+				<input type="submit" value="SAVE">
+			</form>
+		</div>
+	</div>
+	{{end}}	
