@@ -23,7 +23,7 @@ function split_and_load_str(contact_string)
 }
 </script>
 	<div align="center">
-		<h2>List of entries</h2>
+		<h2>Deleted entries</h2>
 		<br>
 		<table border="1px solid black;" id="contactTable">
 			<tr>
@@ -38,7 +38,9 @@ function split_and_load_str(contact_string)
 			<!--Loop this on the number of records in the .csv file-->
 			{{ range .contacts }}
 			<script>
+			{{if . }}
 split_and_load_str( {{.}} );
+			{{end}}
 			</script>
 			{{end}}
 		</table>		
