@@ -1,15 +1,15 @@
-/* Author 1: Chaitanya Sri Krishna 
-Contains the business Logic for the implementation of the Contact List.
-It contains the following features:
-1) Create File in a specified Path.
-2) Insert the contact details into the CSV File.
-3) Retrieves the data from CSV and forms the data for Front end.
-4) Logical Deletion of the Record 
-5) Update Record against a particular Field.
-Low level Details:
-1) Contains Implementations for the File Read, write.
-2) Contains implementation for the indexing of the CSV File.
- */
+/*
+ *Contains the business Logic for the implementation of the Contact List.
+ *It contains the following features:
+ *1) Create File in a specified Path.
+ *2) Insert the contact details into the CSV File.
+ *3) Retrieves the data from CSV and forms the data for Front end.
+ *4) Logical Deletion of the Record 
+ *5) Update Record against a particular Field.
+ *Low level Details:
+ *1) Contains Implementations for the File Read, write.
+ *2) Contains implementation for the indexing of the CSV File.
+*/
 package main
 
 import(
